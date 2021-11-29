@@ -1,4 +1,4 @@
-from tree import Tree, tree_from_sequence, calculate_height
+from tree import Tree, tree_from_sequence, calculate_height, traverse
 
 import pytest
 
@@ -20,3 +20,9 @@ def test_calculate_height(mock_tree_seq):
 
 def test_calculate_height_none():
     assert(calculate_height(None)==0)
+
+
+def test_traverse():
+    tree = Tree(val=4, children=[Tree(val=0), Tree(val=2)])
+    traversed = 'Tree(val=4, children=\n\tTree(val=0)\n\tTree(val=2))'
+    assert traverse(tree) == traversed

@@ -24,6 +24,17 @@ def tree_from_sequence(sequence):
             trees[par].add_child(trees[pos])
     return trees[root]
 
+def traverse(tree):
+    return _traverse(tree, 1)
+
+def _traverse(tree, level):
+    if tree.children is None:
+        return '{}(val={})'.format(type(tree).__name__,tree.val)
+    else:
+        indentation = '\t' * level
+        child_strings = '\n'.join(['{}{}'.format(indentation, _traverse(child, level +1)) for child in tree.children])
+        return '{}(val={}, children=\n{})'.format(type(tree).__name__,tree.val, child_strings)
+
 
 def calculate_height(tree):
     if tree is None:
