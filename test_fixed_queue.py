@@ -1,4 +1,4 @@
-from queue import FixedQueue
+from fixed_queue import FixedQueue
 import pytest
 
 @pytest.fixture
@@ -17,10 +17,11 @@ def test_enqueue():
 def test_dequeue(mock_queue):
     first = mock_queue.dequeue()
     second = mock_queue.dequeue()
-    assert first == 'A' and second == 'B' and mock_queue == FixedQueue(length=5, values=['C', 'D'])
+    assert first == 'A' and second == 'B' and mock_queue.top() == 'C'
 
 
 def test_full(mock_queue):
+    mock_queue.enqueue('E')
     assert mock_queue.is_full()
 
 
@@ -29,3 +30,12 @@ def test_empty():
     fq.enqueue('A')
     fq.dequeue()
     assert fq.is_empty()
+
+def test_last_item(mock_queue):
+    initial_last = mock_queue.last_item()
+    mock_queue.dequeue()
+    mock_queue.dequeue()
+    mock_queue.enqueue('E')
+    mock_queue.enqueue('F')
+    final_last = mock_queue.last_item()
+    assert initial_last == 'D' and final_last == 'F'
