@@ -1,4 +1,4 @@
-# Definition for singly-linked list.
+# Definition for doubly-linked list.
 class ListNode():
     def __init__(self, val=0, next=None, prev=None):
         self.val = val
@@ -97,10 +97,16 @@ class LinkedList():
             self.tail.next = None
 
     def get_last(self):
-        return self.tail
+        if self.tail is None:
+            return None
+        else:
+            return self.tail.get_value()
 
     def get_first(self):
-        return self.head
+        if self.head is None:
+            return None
+        else:
+            return self.head.get_value()
 
     def __repr__(self):
         return ' -> '.join([node.__repr__() for node in self])
