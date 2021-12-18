@@ -1,6 +1,6 @@
 import pytest
 
-from queue import Queue
+from link_queue import Queue
 
 @pytest.fixture
 def mock_queue():
