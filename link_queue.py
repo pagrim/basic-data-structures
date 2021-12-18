@@ -1,6 +1,6 @@
 from linked_list import LinkedList
 
-class LLQueue():
+class LinkQueue():
 
     def __init__(self, data=None):
         self.linked_list = LinkedList()
