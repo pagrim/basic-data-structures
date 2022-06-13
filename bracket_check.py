@@ -1,4 +1,9 @@
-from stack import Stack
+from collections import deque
+
+import logging
+import sys
+
+logging.basicConfig()
 
 class BracketChecker:
 
@@ -6,6 +11,7 @@ class BracketChecker:
         self.sequence = self.init_sequence(sequence)
         self.opening_brackets = ['[', '(', '{']
         self.closing_brackets = [']', ')', '}']
+        self.logger = logging.getLogger('bracket_checker')
 
     def init_sequence(self, sequence):
         if isinstance(sequence, str):
@@ -17,28 +23,34 @@ class BracketChecker:
         return initial
 
     def check(self):
-        stack = Stack()
+        stack = deque()
         for idx, char in enumerate(self.sequence):
-            print('Stack:', stack)
-            print('Char:', char)
+            self.logger.info('Stack: %s, Char: %s', stack, char)
             if char in self.opening_brackets:
-                stack.push((char, idx))
+                stack.append((char, idx))
             elif char in self.closing_brackets:
-                last_open_bracket, last_open_bracket_pos = stack.top()
-                print('Topped from stack:', last_open_bracket, last_open_bracket_pos)
+                last_open_bracket, last_open_bracket_pos = stack[-1]
+                self.logger.debug('Top of stack: (%s, %s)', last_open_bracket, last_open_bracket_pos)
                 char_index = self.closing_brackets.index(char)
                 last_open_bracket_idx = self.opening_brackets.index(last_open_bracket)
                 match = char_index == last_open_bracket_idx 
-                print('Matched:', match, last_open_bracket, char_index)
+                self.logger.debug('Matched: %s, %s and %s', match, last_open_bracket, char_index)
                 if match:
                     stack.pop()
                 else:
-                    print('Unmatched closing bracket character', char, 'at position', idx)
-                    return idx
-        if not stack.is_empty():
-            unmatched_braket, unmatched_bracket_idx = stack.top_left()
-            print('First unmatched bracket', unmatched_braket, 'at position', unmatched_bracket_idx)
-            return unmatched_bracket_idx
+                    self.logger.info('Unmatched closing bracket character %s at position %s', char, idx)
+                    return idx + 1
+        if stack:
+            unmatched_bracket, unmatched_bracket_idx = stack[0]
+            self.logger.info('First unmatched bracket %s at position %s', unmatched_bracket, unmatched_bracket_idx)
+            print(unmatched_bracket_idx + 1)
+            return unmatched_bracket_idx + 1
         else:
             print('Success')
             return "success"
+
+
+if __name__ == '__main__':
+    text = sys.stdin.readline().rtrim()
+    bc = BracketChecker(text)
+    bc.check()
