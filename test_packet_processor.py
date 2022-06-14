@@ -2,21 +2,16 @@ import pytest
 from unittest.mock import Mock
 
 from packet_processor import PacketProcessor, Packet, BufferedPacket
-from fixed_queue import FixedQueue
-
-
-@pytest.fixture
-def mock_packet_processor():
-    return None
+from collections import deque
 
 
 def test_drop_processed():
     pp = PacketProcessor(packets=Mock(), buffer_size=3)
-    pp.buffer = FixedQueue(length=3, values=[BufferedPacket(0, 2),  BufferedPacket(2, 3)])
+    pp.buffer = deque([BufferedPacket(0, 2),  BufferedPacket(2, 3)])
     pp.drop_processed(arrival_time=2)
     exp_top = BufferedPacket(2, 3)
-    exp_buffer = FixedQueue(length=3, values=[None, exp_top])
-    assert pp.buffer == exp_buffer and pp.buffer.top() == exp_top
+    exp_buffer = deque([exp_top])
+    assert pp.buffer == exp_buffer
 
 
 @pytest.mark.parametrize(('packets', 'buffer_size', 'exp_results'),
