@@ -3,15 +3,16 @@ from bracket_check import BracketChecker
 
 
 @pytest.mark.parametrize(("in_str", "exp_res"), [
-    ("[]", "success"),
-    ("{}[]", "success"),
-    ("[()]", "success"),
-    ("(())", "success"),
-    ("{[]}()", "success"),
+    ("[]", "Success"),
+    ("{}[]", "Success"),
+    ("[()]", "Success"),
+    ("(())", "Success"),
+    ("{[]}()", "Success"),
     ("{", 1),
+    ("}", 1),
     ("{[}", 3),
-    ("foo(bar);", "success"),
-    ("foo(bar[i);", 10),
+    ("foo(bar);", "Success"),
+    ("", "Success")
 ])
 def test_check_brackets(in_str, exp_res):
     bc = BracketChecker(in_str)
