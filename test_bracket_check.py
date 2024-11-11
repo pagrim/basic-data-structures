@@ -15,5 +15,6 @@ from bracket_check import BracketChecker
     ("", "Success")
 ])
 def test_check_brackets(in_str, exp_res):
-    bc = BracketChecker(in_str)
+    sequence = [char for char in in_str]
+    bc = BracketChecker(sequence)
     assert bc.check() == exp_res
